@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laptops.uz — Skromniy & Ishonchli Noutbuklar Do'koni</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      line-height: 1.6;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      background-color: #0284c7;
+      color: #ffffff;
+      text-align: center;
+      padding: 8px 15px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 5%;
+      background-color: #1e293b;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid #334155;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .logo span {
+      color: #38bdf8;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      color: #38bdf8;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      color: #f1f5f9;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      color: #94a3b8;
+      font-size: 18px;
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .stat-item h3 {
+      font-size: 26px;
+      color: #38bdf8;
+    }
+
+    .stat-item p {
+      font-size: 13px;
+      color: #94a3b8;
+      margin: 0;
+    }
+
+    /* Filter CSS Logic */
+    input[type="radio"] {
+      display: none;
+    }
+
+    .catalog-section {
+      padding: 50px 5%;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .catalog-section h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 30px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 35px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .tab-btn:hover {
+      background-color: #334155;
+      color: #ffffff;
+    }
+
+    /* Active Filter Styles */
+    #all:checked ~ .filter-tabs label[for="all"],
+    #gaming:checked ~ .filter-tabs label[for="gaming"],
+    #work:checked ~ .filter-tabs label[for="work"],
+    #apple:checked ~ .filter-tabs label[for="apple"],
+    #budget:checked ~ .filter-tabs label[for="budget"] {
+      background-color: #38bdf8;
+      color: #0f172a;
+      font-weight: 600;
+      border-color: #38bdf8;
+    }
+
+    /* Filtering functionality */
+    #gaming:checked ~ .product-grid .product-card:not(.item-gaming),
+    #work:checked ~ .product-grid .product-card:not(.item-work),
+    #apple:checked ~ .product-grid .product-card:not(.item-apple),
+    #budget:checked ~ .product-grid .product-card:not(.item-budget) {
+      display: none;
+    }
+
+    /* Product Cards Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 25px;
+    }
+
+    .product-card {
+      background-color: #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #334155;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      border-color: #38bdf8;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background-color: #0f172a;
+    }
+
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .badge {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 6px;
+      color: #fff;
+    }
+
+    .gaming-badge { background-color: #ef4444; }
+    .work-badge { background-color: #3b82f6; }
+    .apple-badge { background-color: #a855f7; }
+    .budget-badge { background-color: #10b981; }
+
+    .product-card h3 {
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .specs {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #334155;
+      padding-top: 15px;
+    }
+
+    .price {
+      font-size: 21px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      background-color: #38bdf8;
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 6px;
+      font-size: 13px;
+      transition: opacity 0.3s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Brands Section */
+    .brands-section {
+      padding: 40px 5%;
+      background-color: #1e293b;
+      text-align: center;
+    }
+
+    .brands-section h3 {
+      font-size: 18px;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    .brands-grid {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      font-size: 20px;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .brands-grid span {
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    .brands-grid span:hover {
+      color: #38bdf8;
+    }
+
+    /* Features Section */
+    .features-section {
+      padding: 60px 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .features-section h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 40px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      padding: 25px 20px;
+      border-radius: 12px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: #38bdf8;
+    }
+
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #f1f5f9;
+    }
+
+    .feature-card p {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    /* Installment (Muddatli to'lov) Section */
+    .installment-section {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #38bdf8;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 1100px;
+      margin: 40px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .installment-text h2 {
+      font-size: 26px;
+      color: #38bdf8;
+      margin-bottom: 10px;
+    }
+
+    .installment-text p {
+      color: #cbd5e1;
+      font-size: 15px;
+      max-width: 600px;
+    }
+
+    /* Reviews Section */
+    .reviews-section {
+      padding: 60px 5%;
+      background-color: #1e293b;
+    }
+
+    .reviews-section h2 {
+      text-align: center;
+      font-size: 28px;
+    }
+
+    .sub-title {
+      text-align: center;
+      color: #94a3b8;
+      margin-bottom: 35px;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .review-card {
+      background-color: #0f172a;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      background-color: #38bdf8;
+      color: #0f172a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .stars {
+      color: #f59e0b;
+      font-size: 14px;
+    }
+
+    .review-card p {
+      color: #cbd5e1;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 60px 5%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .faq-section h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    .faq-item {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .faq-item h4 {
+      color: #38bdf8;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .faq-item p {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    /* Modal / Predprosmotr Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay:target {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      max-width: 800px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      color: #ef4444;
+    }
+
+    .modal-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      padding: 30px;
+    }
+
+    .modal-img {
+      width: 100%;
+      height: 100%;
+      min-height: 250px;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #0f172a;
+    }
+
+    .modal-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .modal-info h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .modal-desc {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .modal-specs {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .modal-specs li {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #334155;
+      padding-bottom: 4px;
+    }
+
+    .modal-specs strong {
+      color: #38bdf8;
+    }
+
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+
+    .buy-btn {
+      background-color: #10b981;
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.3s;
+    }
+
+    .buy-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Footer Styles */
+    .footer {
+      background-color: #0b1120;
+      border-top: 1px solid #1e293b;
+      padding: 60px 5% 20px;
+      margin-top: 50px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .footer-col h4 {
+      font-size: 18px;
+      color: #f8fafc;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .footer-col h4::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 30px;
+      height: 2px;
+      background-color: #38bdf8;
+    }
+
+    .footer-desc {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul li a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover {
+      color: #38bdf8;
+    }
+
+    .footer-col p {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .footer-col p strong {
+      color: #38bdf8;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #1e293b;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    @media (max-width: 650px) {
+      .modal-body {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+
+      .modal-img {
+        height: 180px;
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    ⚡ Toshkent bo'ylab 3 soat ichida BESHPLATNO yetkazib berish! Kafolat 1 yil.
+  </div>
+
+  <!-- Header Section -->
+  <header class="navbar">
+    <div class="logo">Laptops<span>.uz</span></div>
+    <nav class="nav-links">
+      <a href="#catalog">Katalog</a>
+      <a href="#features">Afzalliklar</a>
+      <a href="#installment">Muddatli to'lov</a>
+      <a href="#reviews">Otzivlar</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contacts">Aloqa</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>O'zingizga mos noutbukni oson toping</h1>
+    <p>O'zbekistondagi eng hamyonbop va sifatli noutbuklar onlayn do'koni. O'yinlar, dasturlash va o'qish uchun rasmiy kafolatli modellar.</p>
+    
+    <div class="hero-stats">
+      <div class="stat-item">
+        <h3>5,000+</h3>
+        <p>Mamnun xaridorlar</p>
+      </div>
+      <div class="stat-item">
+        <h3>100%</h3>
+        <p>Original mahsulotlar</p>
+      </div>
+      <div class="stat-item">
+        <h3>1-3 Yil</h3>
+        <p>Rasmiy kafolat</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brands Showcase -->
+  <div class="brands-section">
+    <h3>RASMIY BAZAVIY BRENDLAR:</h3>
+    <div class="brands-grid">
+      <span>ASUS</span>
+      <span>LENOVO</span>
+      <span>MSI</span>
+      <span>APPLE</span>
+      <span>HP</span>
+      <span>DELL</span>
+      <span>ACER</span>
+    </div>
+  </div>
+
+  <!-- Catalog & Filter Section -->
+  <section class="catalog-section" id="catalog">
+    <h2>Noutbuklar katalogi</h2>
+
+    <!-- Radio Inputs for Pure CSS Filter -->
+    <input type="radio" name="filter" id="all" checked>
+    <input type="radio" name="filter" id="gaming">
+    <input type="radio" name="filter" id="work">
+    <input type="radio" name="filter" id="apple">
+    <input type="radio" name="filter" id="budget">
+
+    <!-- Filter Buttons -->
+    <div class="filter-tabs">
+      <label for="all" class="tab-btn">Barchasi (24)</label>
+      <label for="gaming" class="tab-btn">O'yinlar uchun</label>
+      <label for="work" class="tab-btn">Ish va Dasturlash</label>
+      <label for="apple" class="tab-btn">Apple MacBook</label>
+      <label for="budget" class="tab-btn">O'qish / Hamyonbop</label>
+    </div>
+
+    <!-- Product Grid (24 ta Model) -->
+    <div class="product-grid">
+
+      <!-- Laptop 1 -->
+      <div class="product-card item-gaming">
+        <div class="badge gaming-badge">Gaming</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&q=80" alt="MSI Thin A15"></div>
+        <h3>MSI Thin A15</h3>
+        <p class="specs">Ryzen 5 7535HS • RTX 2050 • 16GB RAM • 512GB SSD</p>
+        <div class="card-footer"><span class="price">$650</span><a href="#modal-1" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 2 -->
+      <div class="product-card item-apple">
+        <div class="badge apple-badge">Apple</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80" alt="MacBook Air M1"></div>
+        <h3>MacBook Air M1</h3>
+        <p class="specs">Apple M1 • 8-core CPU • 8GB RAM • 256GB SSD</p>
+        <div class="card-footer"><span class="price">$720</span><a href="#modal-2" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 3 -->
+      <div class="product-card item-budget">
+        <div class="badge budget-badge">O'qish uchun</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&q=80" alt="Lenovo IdeaPad 3"></div>
+        <h3>Lenovo IdeaPad 3</h3>
+        <p class="specs">Core i3 12-Gen • 8GB RAM • 256GB SSD • 15.6" FHD</p>
+        <div class="card-footer"><span class="price">$380</span><a href="#modal-3" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 4 -->
+      <div class="product-card item-gaming">
+        <div class="badge gaming-badge">Gaming</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=500&q=80" alt="ASUS TUF A15"></div>
+        <h3>ASUS TUF Gaming A15</h3>
+        <p class="specs">Ryzen 7 7735HS • RTX 4050 • 16GB RAM • 1TB SSD</p>
+        <div class="card-footer"><span class="price">$920</span><a href="#modal-4" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 5 -->
+      <div class="product-card item-work">
+        <div class="badge work-badge">Ish uchun</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=500&q=80" alt="HP Pavilion 15"></div>
+        <h3>HP Pavilion 15</h3>
+        <p class="specs">Core i5 13-Gen • 16GB RAM • 512GB SSD • Iris Xe</p>
+        <div class="card-footer"><span class="price">$590</span><a href="#modal-5" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 6 -->
+      <div class="product-card item-apple">
+        <div class="badge apple-badge">Apple Pro</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=500&q=80" alt="MacBook Pro 14"></div>
+        <h3>MacBook Pro 14"</h3>
+        <p class="specs">Apple M3 Chip • 8-core CPU • 18GB RAM • 512GB SSD</p>
+        <div class="card-footer"><span class="price">$1,550</span><a href="#modal-6" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 7 -->
+      <div class="product-card item-gaming">
+        <div class="badge gaming-badge">Gaming Pro</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&q=80" alt="Lenovo Legion 5"></div>
+        <h3>Lenovo Legion 5 Pro</h3>
+        <p class="specs">Ryzen 7 7840HS • RTX 4060 • 16GB RAM • 512GB SSD</p>
+        <div class="card-footer"><span class="price">$1,150</span><a href="#modal-7" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 8 -->
+      <div class="product-card item-budget">
+        <div class="badge budget-badge">O'qish uchun</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80" alt="Acer Aspire 5"></div>
+        <h3>Acer Aspire 5</h3>
+        <p class="specs">Core i5 12-Gen • 8GB RAM • 512GB SSD • 15.6" FHD</p>
+        <div class="card-footer"><span class="price">$460</span><a href="#modal-8" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 9 (DELL XPS 13 - Yangilangan Rasm) -->
+      <div class="product-card item-work">
+        <div class="badge work-badge">Business</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?w=500&q=80" alt="Dell XPS 13"></div>
+        <h3>Dell XPS 13</h3>
+        <p class="specs">Core i7 13-Gen • 16GB RAM • 512GB SSD • 4K Touch</p>
+        <div class="card-footer"><span class="price">$1,280</span><a href="#modal-9" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 10 -->
+      <div class="product-card item-gaming">
+        <div class="badge gaming-badge">Gaming</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&q=80" alt="Acer Nitro 5"></div>
+        <h3>Acer Nitro 5</h3>
+        <p class="specs">Core i5 12500H • RTX 3050 • 16GB RAM • 512GB SSD</p>
+        <div class="card-footer"><span class="price">$740</span><a href="#modal-10" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 11 -->
+      <div class="product-card item-apple">
+        <div class="badge apple-badge">Apple</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80" alt="MacBook Air M2"></div>
+        <h3>MacBook Air M2</h3>
+        <p class="specs">Apple M2 Chip • 8GB RAM • 256GB SSD • Liquid Retina</p>
+        <div class="card-footer"><span class="price">$980</span><a href="#modal-11" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 12 -->
+      <div class="product-card item-gaming">
+        <div class="badge gaming-badge">Gaming Pro</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=500&q=80" alt="HP Victus 15"></div>
+        <h3>HP Victus 15</h3>
+        <p class="specs">Ryzen 5 7535HS • RTX 3050 • 16GB RAM • 512GB SSD</p>
+        <div class="card-footer"><span class="price">$690</span><a href="#modal-12" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 13 -->
+      <div class="product-card item-budget">
+        <div class="badge budget-badge">O'qish uchun</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&q=80" alt="ASUS Vivobook 15"></div>
+        <h3>ASUS Vivobook 15</h3>
+        <p class="specs">Core i3 13-Gen • 8GB RAM • 512GB SSD • OLED Display</p>
+        <div class="card-footer"><span class="price">$430</span><a href="#modal-13" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 14 -->
+      <div class="product-card item-work">
+        <div class="badge work-badge">Business</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=500&q=80" alt="ThinkPad X1 Carbon"></div>
+        <h3>ThinkPad X1 Carbon</h3>
+        <p class="specs">Core i7 13-Gen • 16GB RAM • 1TB SSD • Carbon Fiber</p>
+        <div class="card-footer"><span class="price">$1,420</span><a href="#modal-14" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 15 -->
+      <div class="product-card item-gaming">
+        <div class="badge gaming-badge">Gaming Ultimate</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&q=80" alt="ASUS ROG Strix G16"></div>
+        <h3>ASUS ROG Strix G16</h3>
+        <p class="specs">Core i7 13650HX • RTX 4070 • 16GB DDR5 • 1TB SSD</p>
+        <div class="card-footer"><span class="price">$1,480</span><a href="#modal-15" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 16 -->
+      <div class="product-card item-budget">
+        <div class="badge budget-badge">Hamyonbop</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80" alt="HP 14 Ultra Slim"></div>
+        <h3>HP 14 Ultra Slim</h3>
+        <p class="specs">AMD Ryzen 3 7320U • 8GB RAM • 256GB SSD • Yengil korpus</p>
+        <div class="card-footer"><span class="price">$340</span><a href="#modal-16" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 17 (ASUS Zenbook 14 - Yangilangan Rasm) -->
+      <div class="product-card item-work">
+        <div class="badge work-badge">OLED Pro</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80" alt="ASUS Zenbook 14 OLED"></div>
+        <h3>ASUS Zenbook 14 OLED</h3>
+        <p class="specs">Core i7 1360P • 16GB RAM • 1TB SSD • 2.8K 90Hz OLED</p>
+        <div class="card-footer"><span class="price">$1,050</span><a href="#modal-17" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 18 -->
+      <div class="product-card item-gaming">
+        <div class="badge gaming-badge">Gaming Pro</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&q=80" alt="MSI Katana 15"></div>
+        <h3>MSI Katana 15</h3>
+        <p class="specs">Core i7 13620H • RTX 4060 • 16GB RAM • 1TB SSD</p>
+        <div class="card-footer"><span class="price">$1,120</span><a href="#modal-18" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 19 -->
+      <div class="product-card item-apple">
+        <div class="badge apple-badge">Apple Pro</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=500&q=80" alt="MacBook Pro 16"></div>
+        <h3>MacBook Pro 16" M3 Max</h3>
+        <p class="specs">M3 Max • 36GB Unified RAM • 1TB SSD • Liquid XDR</p>
+        <div class="card-footer"><span class="price">$2,850</span><a href="#modal-19" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 20 -->
+      <div class="product-card item-budget">
+        <div class="badge budget-badge">O'qish uchun</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&q=80" alt="Lenovo V15"></div>
+        <h3>Lenovo V15 G3</h3>
+        <p class="specs">Core i3 1215U • 8GB RAM • 512GB SSD • 15.6" Full HD</p>
+        <div class="card-footer"><span class="price">$395</span><a href="#modal-20" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 21 -->
+      <div class="product-card item-work">
+        <div class="badge work-badge">Ultra-Book</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&q=80" alt="LG Gram 16"></div>
+        <h3>LG Gram 16</h3>
+        <p class="specs">Core i7 1360P • 16GB RAM • 1TB SSD • 1.19 kg Ultra Light</p>
+        <div class="card-footer"><span class="price">$1,350</span><a href="#modal-21" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 22 -->
+      <div class="product-card item-gaming">
+        <div class="badge gaming-badge">Gaming</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=500&q=80" alt="Gigabyte G5"></div>
+        <h3>Gigabyte G5 KF</h3>
+        <p class="specs">Core i5 12500H • RTX 4060 • 16GB RAM • 512GB SSD</p>
+        <div class="card-footer"><span class="price">$870</span><a href="#modal-22" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 23 -->
+      <div class="product-card item-apple">
+        <div class="badge apple-badge">Apple</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80" alt="MacBook Air 15 M2"></div>
+        <h3>MacBook Air 15" M2</h3>
+        <p class="specs">Apple M2 • 8GB RAM • 512GB SSD • 15.3" Liquid Retina</p>
+        <div class="card-footer"><span class="price">$1,220</span><a href="#modal-23" class="btn">Predprosmotr</a></div>
+      </div>
+
+      <!-- Laptop 24 -->
+      <div class="product-card item-budget">
+        <div class="badge budget-badge">O'qish uchun</div>
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80" alt="ASUS E510"></div>
+        <h3>ASUS E510 Laptop</h3>
+        <p class="specs">Intel Celeron N4020 • 4GB RAM • 256GB SSD • Compact</p>
+        <div class="card-footer"><span class="price">$290</span><a href="#modal-24" class="btn">Predprosmotr</a></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Installment / Muddatli to'lov Section -->
+  <div class="installment-section" id="installment">
+    <div class="installment-text">
+      <h2>Boshlang'ich to'lovsiz Muddatli to'lov!</h2>
+      <p>Endi noutbuklarni Anorbank, Uzum Nasiya, Iman Pay va Zoodpay orqali 3, 6, 12 oyga bo'lib to'lashga xarid qilishingiz mumkin. Ortqcha hujjatlarsiz, faqat pasport kifoya.</p>
+    </div>
+    <a href="https://t.me/laptops_admin" target="_blank" class="buy-btn" style="background-color: #38bdf8; color: #0f172a; padding: 12px 25px; font-size: 16px;">Rasmiylashtirish</a>
+  </div>
+
+  <!-- Nega Aynan Biz? Section -->
+  <section class="features-section" id="features">
+    <h2>Nega bizni tanlashadi?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Rasmiy Kafolat</h3>
+        <p>Barcha noutbuklarga 1 yildan 3 yilgacha servis markazi tomonidan rasmiy kafolat beriladi.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💸</div>
+        <h3>Pulni Qaytarish</h3>
+        <p>Agar mahsulotda zavod nuqsoni aniqlansa, 3 kun ichida pulingizni 100% to'liq qaytaramiz yoki almashtirib beramiz.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>Tezkor Yetkazib berish</h3>
+        <p>Toshkent shahar bo'ylab 3 soat ichida, viloyatlarga esa 1-2 kun ichida ishonchli yetkazib beramiz.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎧</div>
+        <h3>24/7 Qo'llab-quvvatlash</h3>
+        <p>Tanlashda qiynalsangiz yoki texnik savollar bo'lsa, istalgan vaqtda Telegram orqali yordam beramiz.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews Section (Otzivlar) -->
+  <section class="reviews-section" id="reviews">
+    <h2>Mijozlarimiz fikrlari</h2>
+    <p class="sub-title">Sotib olgan xaridorlarimiz qoldirgan izohlar</p>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="user-info">
+          <div class="avatar">F</div>
+          <div>
+            <h4>Fayzulloh S.</h4>
+            <span class="stars">★★★★★</span>
+          </div>
+        </div>
+        <p>"Noutbuk zo'r holatda yetib keldi. Dasturlash va o'yinlar uchun MSI oldim, kutilganidanam tez ishlayapti. Rahmat!"</p>
+      </div>
+
+      <div class="review-card">
+        <div class="user-info">
+          <div class="avatar">A</div>
+          <div>
+            <h4>Azizbek M.</h4>
+            <span class="stars">★★★★★</span>
+          </div>
+        </div>
+        <p>"O'qish uchun Lenovo IdeaPad buyurtma qilgandim. Hamyonbop va sifatli. Zaryadi ham uzoqqa yetyapti."</p>
+      </div>
+
+      <div class="review-card">
+        <div class="user-info">
+          <div class="avatar">D</div>
+          <div>
+            <h4>Diyora K.</h4>
+            <span class="stars">★★★★★</span>
+          </div>
+        </div>
+        <p>"MacBook Air M1 ish uchun juda qulay. Yetkazib berish ham tez bo'ldi, maslahat beraman!"</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <h2>Tez-tez beriladigan savollar</h2>
+    <div class="faq-item">
+      <h4>Noutbuklarga kafolat bormi?</h4>
+      <p>Ha, barcha noutbuklarimiz original va ularga 1 yildan 3 yilgacha rasmiy kafolat taloni beriladi.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Toshkentdan tashqariga ham yetkazib berilasizmi?</h4>
+      <p>Ha, O'zbekistonning barcha viloyatlariga BTS pochta va kuryerlik xizmatlari orqali 1-2 kunda yetkaziladi.</p>
+    </div>
+    <div class="faq-item">
+      <h4>To'lov turlari qanday?</h4>
+      <p>Naqd pul, Click, Payme, Uzcard, Humo va Muddatli to'lov (Rassrochka) orqali to'lashingiz mumkin.</p>
+    </div>
+  </section>
+
+  <!-- PREDPROSMOTR MODAL OYNALARI (MODAL 1-24) -->
+
+  <div id="modal-1" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&q=80" alt="MSI Thin A15"></div>
+        <div class="modal-info">
+          <span class="modal-badge gaming-badge">Gaming Laptop</span>
+          <h2>MSI Thin A15 B7UCX</h2>
+          <p class="modal-desc">Kuchli o'yinlar va og'ir dasturlarda ishlash uchun juda qulay noutbuk.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> AMD Ryzen 5 7535HS</li>
+            <li><strong>Video karta:</strong> NVIDIA GeForce RTX 2050 4GB</li>
+            <li><strong>Operativ xotira:</strong> 16GB DDR5</li>
+            <li><strong>Xotira:</strong> 512GB NVMe SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$650</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-2" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80" alt="MacBook Air M1"></div>
+        <div class="modal-info">
+          <span class="modal-badge apple-badge">Apple</span>
+          <h2>MacBook Air M1 (2020)</h2>
+          <p class="modal-desc">Sokin va tezkor ishlaydigan noutbuk. Akkumulyatori 18 soatgacha yetadi.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Apple M1 Chip (8-core)</li>
+            <li><strong>Operativ xotira:</strong> 8GB Unified Memory</li>
+            <li><strong>Xotira:</strong> 256GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$720</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-3" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&q=80" alt="Lenovo IdeaPad 3"></div>
+        <div class="modal-info">
+          <span class="modal-badge budget-badge">O'qish uchun</span>
+          <h2>Lenovo IdeaPad 3</h2>
+          <p class="modal-desc">Talabalar va ofis ishlari uchun optimal va hamyonbop noutbuk.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i3-1215U</li>
+            <li><strong>Operativ xotira:</strong> 8GB DDR4</li>
+            <li><strong>Xotira:</strong> 256GB NVMe SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$380</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-4" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800&q=80" alt="ASUS TUF A15"></div>
+        <div class="modal-info">
+          <span class="modal-badge gaming-badge">Gaming Laptop</span>
+          <h2>ASUS TUF Gaming A15</h2>
+          <p class="modal-desc">Zamonaviy o'yinlar va 3D grafika uchun mustahkam o'yin noutbuki.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> AMD Ryzen 7 7735HS</li>
+            <li><strong>Video karta:</strong> RTX 4050 6GB</li>
+            <li><strong>Operativ xotira:</strong> 16GB DDR5</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$920</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-5" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=800&q=80" alt="HP Pavilion 15"></div>
+        <div class="modal-info">
+          <span class="modal-badge work-badge">Ish uchun</span>
+          <h2>HP Pavilion 15</h2>
+          <p class="modal-desc">Dasturlash va kundalik vazifalar uchun silliq hamda yengil ishlaydigan model.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i5-1335U</li>
+            <li><strong>Operativ xotira:</strong> 16GB DDR4</li>
+            <li><strong>Xotira:</strong> 512GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$590</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-6" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800&q=80" alt="MacBook Pro 14"></div>
+        <div class="modal-info">
+          <span class="modal-badge apple-badge">Apple Pro</span>
+          <h2>MacBook Pro 14" (M3)</h2>
+          <p class="modal-desc">Professional video montajchilar, dizaynerlar va dasturchilar uchun top noutbuk.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Apple M3 Chip</li>
+            <li><strong>Operativ xotira:</strong> 18GB Unified Memory</li>
+            <li><strong>Xotira:</strong> 512GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$1,550</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-7" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&q=80" alt="Lenovo Legion 5"></div>
+        <div class="modal-info">
+          <span class="modal-badge gaming-badge">Gaming Pro</span>
+          <h2>Lenovo Legion 5 Pro</h2>
+          <p class="modal-desc">Ajoyib sovutish tizimiga ega eng mashhur o'yin va render noutbuki.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> AMD Ryzen 7 7840HS</li>
+            <li><strong>Video karta:</strong> RTX 4060 8GB</li>
+            <li><strong>Operativ xotira:</strong> 16GB DDR5</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$1,150</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-8" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80" alt="Acer Aspire 5"></div>
+        <div class="modal-info">
+          <span class="modal-badge budget-badge">O'qish uchun</span>
+          <h2>Acer Aspire 5</h2>
+          <p class="modal-desc">Kundalik ishlar, darslar va filmlar ko'rish uchun ideal tanlov.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i5-12450H</li>
+            <li><strong>Operativ xotira:</strong> 8GB DDR4</li>
+            <li><strong>Xotira:</strong> 512GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$460</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 9 (Dell XPS 13 Modal) -->
+  <div id="modal-9" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?w=800&q=80" alt="Dell XPS 13"></div>
+        <div class="modal-info">
+          <span class="modal-badge work-badge">Business</span>
+          <h2>Dell XPS 13</h2>
+          <p class="modal-desc">Premium dizayn, ramkasiz sensorli ekran va yuqori mobil imkoniyatlar.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i7-1360P</li>
+            <li><strong>Operativ xotira:</strong> 16GB LPDDR5</li>
+            <li><strong>Xotira:</strong> 512GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$1,280</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-10" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&q=80" alt="Acer Nitro 5"></div>
+        <div class="modal-info">
+          <span class="modal-badge gaming-badge">Gaming</span>
+          <h2>Acer Nitro 5</h2>
+          <p class="modal-desc">Hamyonbop narxdagi o'yin va dasturlash noutbuki.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i5-12500H</li>
+            <li><strong>Video karta:</strong> RTX 3050 4GB</li>
+            <li><strong>Operativ xotira:</strong> 16GB DDR4</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$740</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-11" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80" alt="MacBook Air M2"></div>
+        <div class="modal-info">
+          <span class="modal-badge apple-badge">Apple</span>
+          <h2>MacBook Air M2</h2>
+          <p class="modal-desc">Yangilangan ingichka korpus va M2 chipining yuqori samaradorligi.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Apple M2 Chip</li>
+            <li><strong>Operativ xotira:</strong> 8GB RAM</li>
+            <li><strong>Xotira:</strong> 256GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$980</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-12" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800&q=80" alt="HP Victus 15"></div>
+        <div class="modal-info">
+          <span class="modal-badge gaming-badge">Gaming Pro</span>
+          <h2>HP Victus 15</h2>
+          <p class="modal-desc">Minimalistik o'yin dizayni va zamonaviy sovutish tizimi.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> AMD Ryzen 5 7535HS</li>
+            <li><strong>Video karta:</strong> RTX 3050 4GB</li>
+            <li><strong>Operativ xotira:</strong> 16GB RAM</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$690</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-13" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&q=80" alt="ASUS Vivobook 15"></div>
+        <div class="modal-info">
+          <span class="modal-badge budget-badge">O'qish uchun</span>
+          <h2>ASUS Vivobook 15 OLED</h2>
+          <p class="modal-desc">Yorqin va rangdor OLED ekran bilan o'qish va filmlar uchun ajoyib variant.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i3 13-Gen</li>
+            <li><strong>Operativ xotira:</strong> 8GB RAM</li>
+            <li><strong>Xotira:</strong> 512GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$430</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-14" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=800&q=80" alt="ThinkPad X1 Carbon"></div>
+        <div class="modal-info">
+          <span class="modal-badge work-badge">Business</span>
+          <h2>ThinkPad X1 Carbon Gen 11</h2>
+          <p class="modal-desc">Afsonaviy klaviatura, ultra mustahkam uglevolokno korpus va yuqori xavfsizlik.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i7 13-Gen</li>
+            <li><strong>Operativ xotira:</strong> 16GB RAM</li>
+            <li><strong>Xotira:</strong> 1TB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$1,420</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-15" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&q=80" alt="ASUS ROG Strix G16"></div>
+        <div class="modal-info">
+          <span class="modal-badge gaming-badge">Gaming Ultimate</span>
+          <h2>ASUS ROG Strix G16</h2>
+          <p class="modal-desc">O'yinchilar va strimerlar uchun maksimal unumdorlik beruvchi kibersport noutbuki.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i7-13650HX</li>
+            <li><strong>Video karta:</strong> RTX 4070 8GB</li>
+            <li><strong>Operativ xotira:</strong> 16GB DDR5</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$1,480</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-16" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80" alt="HP 14 Ultra Slim"></div>
+        <div class="modal-info">
+          <span class="modal-badge budget-badge">Hamyonbop</span>
+          <h2>HP 14 Ultra Slim</h2>
+          <p class="modal-desc">Kundalik ish, Zoom uchrashuvlar va o'qish uchun ixcham hamda yengil noutbuk.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> AMD Ryzen 3 7320U</li>
+            <li><strong>Operativ xotira:</strong> 8GB LPDDR5</li>
+            <li><strong>Xotira:</strong> 256GB NVMe SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$340</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 17 (ASUS Zenbook 14 Modal) -->
+  <div id="modal-17" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80" alt="ASUS Zenbook 14 OLED"></div>
+        <div class="modal-info">
+          <span class="modal-badge work-badge">OLED Pro</span>
+          <h2>ASUS Zenbook 14 OLED</h2>
+          <p class="modal-desc">Yuqori rang uzatish xususiyatiga ega 2.8K OLED displeyli premium ishchi noutbuk.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i7-1360P</li>
+            <li><strong>Operativ xotira:</strong> 16GB LPDDR5</li>
+            <li><strong>Xotira:</strong> 1TB NVMe SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$1,050</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-18" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&q=80" alt="MSI Katana 15"></div>
+        <div class="modal-info">
+          <span class="modal-badge gaming-badge">Gaming Pro</span>
+          <h2>MSI Katana 15 B13VGK</h2>
+          <p class="modal-desc">13-avlod protsessor va RTX 4060 grafik kartasi bilan o'yinlarda eng yuqori FPS.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i7-13620H</li>
+            <li><strong>Video karta:</strong> RTX 4060 8GB</li>
+            <li><strong>Operativ xotira:</strong> 16GB DDR5</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$1,120</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-19" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800&q=80" alt="MacBook Pro 16"></div>
+        <div class="modal-info">
+          <span class="modal-badge apple-badge">Apple Pro</span>
+          <h2>MacBook Pro 16" M3 Max</h2>
+          <p class="modal-desc">Maksimal kuch va unumdorlik: 3D render, 8K video va murakkab hisob-kitoblar uchun.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Apple M3 Max (16-core)</li>
+            <li><strong>Operativ xotira:</strong> 36GB Unified Memory</li>
+            <li><strong>Xotira:</strong> 1TB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$2,850</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-20" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&q=80" alt="Lenovo V15"></div>
+        <div class="modal-info">
+          <span class="modal-badge budget-badge">O'qish uchun</span>
+          <h2>Lenovo V15 G3 IAP</h2>
+          <p class="modal-desc">Ish va o'qish uchun minimalist, ixcham va uzoq vaqtga yetadigan akkumulyator.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i3-1215U</li>
+            <li><strong>Operativ xotira:</strong> 8GB DDR4</li>
+            <li><strong>Xotira:</strong> 512GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$395</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-21" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80" alt="LG Gram 16"></div>
+        <div class="modal-info">
+          <span class="modal-badge work-badge">Ultra-Book</span>
+          <h2>LG Gram 16 SuperSlim</h2>
+          <p class="modal-desc">Dunyoning eng yengil 16 dyuymli ultrabuki. Doimiy yo'lda yuradiganlar uchun va o'qish/ishga qulay.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i7-1360P</li>
+            <li><strong>Operativ xotira:</strong> 16GB LPDDR5</li>
+            <li><strong>Og'irligi:</strong> 1.19 kg</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$1,350</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-22" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800&q=80" alt="Gigabyte G5"></div>
+        <div class="modal-info">
+          <span class="modal-badge gaming-badge">Gaming</span>
+          <h2>Gigabyte G5 KF</h2>
+          <p class="modal-desc">Byudjetli RTX 4060 grafik kartali o'yin va video render noutbuki.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Core i5-12500H</li>
+            <li><strong>Video karta:</strong> RTX 4060 8GB</li>
+            <li><strong>Operativ xotira:</strong> 16GB DDR4</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$870</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-23" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80" alt="MacBook Air 15 M2"></div>
+        <div class="modal-info">
+          <span class="modal-badge apple-badge">Apple</span>
+          <h2>MacBook Air 15" M2</h2>
+          <p class="modal-desc">Katta ekranli, yengil va batareyasi 18 soatgacha yetadigan ideal Apple disayni.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Apple M2 Chip</li>
+            <li><strong>Operativ xotira:</strong> 8GB RAM</li>
+            <li><strong>Xotira:</strong> 512GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$1,220</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-24" class="modal-overlay">
+    <div class="modal-content">
+      <a href="#catalog" class="modal-close">&times;</a>
+      <div class="modal-body">
+        <div class="modal-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80" alt="ASUS E510"></div>
+        <div class="modal-info">
+          <span class="modal-badge budget-badge">O'qish uchun</span>
+          <h2>ASUS E510 Laptop</h2>
+          <p class="modal-desc">Eng hamyonbop va kundalik hujjatlar bilan ishlash va online darslar uchun mos model.</p>
+          <ul class="modal-specs">
+            <li><strong>Protsessor:</strong> Intel Celeron N4020</li>
+            <li><strong>Operativ xotira:</strong> 4GB RAM</li>
+            <li><strong>Xotira:</strong> 256GB SSD</li>
+            <li><strong>Kafolat:</strong> 1 Yil rasmiy kafolat</li>
+          </ul>
+          <div class="modal-footer"><span class="price">$290</span><a href="https://t.me/laptops_admin" target="_blank" class="buy-btn">Buyurtma berish</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Complete Professional Footer -->
+  <footer class="footer" id="contacts">
+    <div class="footer-container">
+      
+      <!-- Column 1: About -->
+      <div class="footer-col">
+        <div class="logo">Laptops<span>.uz</span></div>
+        <p class="footer-desc">
+          O'zbekistondagi eng ishonchli va arzon noutbuklar onlayn do'koni. Sifatli rasmiy kafolat va tezkor yetkazib berish.
+        </p>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="footer-col">
+        <h4>Bo'limlar</h4>
+        <ul>
+          <li><a href="#catalog">Katalog</a></li>
+          <li><a href="#features">Kafolat va shartlar</a></li>
+          <li><a href="#installment">Muddatli to'lov</a></li>
+          <li><a href="#reviews">Mijozlar fikri</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Categories -->
+      <div class="footer-col">
+        <h4>Kategoriyalar</h4>
+        <ul>
+          <li><a href="#catalog">O'yin noutbuklari</a></li>
+          <li><a href="#catalog">O'qish va Ofis uchun</a></li>
+          <li><a href="#catalog">Apple MacBook</a></li>
+          <li><a href="#catalog">Ultrabuklar</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Contacts -->
+      <div class="footer-col">
+        <h4>Bog'lanish</h4>
+        <p>Telegram: <strong>@laptops_admin</strong></p>
+        <p>Telefon: <strong>+998 (90) 123-45-67</strong></p>
+        <p>Manzil: Toshkent sh., Chilonzor tumani</p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 Laptops.uz. Barcha huquqlar himoyalangan.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
